@@ -11,11 +11,14 @@ bot = telebot.TeleBot(TOKEN)
 #приветствие
 @bot.message_handler(commands= ["start", "help"])
 def greetings (message: telebot.types.Message):
-    text = "Привет! Я умею конвертировать валюты" '\n'\
+    text = "Привет! Я умею конвертировать валюты:" '\n'\
+           "Напиши команду /values, чтобы узнть какие." '\n'\
+           "----------------------------------------- " '\n'\
            "Введи 3 параметра через пробел:" '\n' \
-           "Валюту, которую ты хочешь конвертировать" '\n' \
-           "Валюту, в которую хочешь перевести" '\n' \
-           "Объем валюты на перевод" '\n' \
+           "1. Валюту, которую ты хочешь конвертировать" '\n' \
+           "2. Валюту, в которую хочешь провести конвертацию" '\n' \
+           "3. Объем валюты на перевод" '\n' \
+           "----------------------------------------- " '\n' \
            "Например: доллар евро 15"
     bot.send_message(message.chat.id, text)
 
@@ -33,7 +36,7 @@ def converter(message: telebot.types.Message):
     values = message.text.split(' ')
     try:
         if len(values) != 3:
-            raise APIException('Некорректный ввод, введи команду /help')
+            raise APIException('Некорректный формат ввода. Для примера, введи команду /help')
         answer = Converter.get_price(*values)
     except APIException as e:
         bot.reply_to(message, f"Ошибка в команде. \n{e}")
